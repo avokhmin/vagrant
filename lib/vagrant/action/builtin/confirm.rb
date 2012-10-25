@@ -16,8 +16,8 @@ module Vagrant
 
         def call(env)
           # Ask the user the message and store the result
-          choice = nil
-          choice = env[:ui].ask(@message)
+          choice = 'y'
+#          choice = env[:ui].ask(@message)
           env[:result] = choice && choice.upcase == "Y"
 
           @app.call(env)
