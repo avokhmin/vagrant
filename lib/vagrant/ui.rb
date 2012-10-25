@@ -38,7 +38,7 @@ module Vagrant
         super
 
         # Silent can't do this, obviously.
-        raise Errors::UIExpectsTTY
+#        raise Errors::UIExpectsTTY
       end
     end
 
