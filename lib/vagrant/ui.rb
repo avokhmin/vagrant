@@ -63,7 +63,7 @@ module Vagrant
         super(message)
 
         # We can't ask questions when the output isn't a TTY.
-        raise Errors::UIExpectsTTY if !$stdin.tty?
+#        raise Errors::UIExpectsTTY if !$stdin.tty?
 
         # Setup the options so that the new line is suppressed
         opts ||= {}
