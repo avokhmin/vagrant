@@ -87,7 +87,7 @@ module VagrantPlugins
 
           # Go through each folder and mount
           folders.each do |name, data|
-            if data[:guestpath]
+            unless data[:guestpath].empty?
               # Guest path specified, so mount the folder to specified point
               @env[:ui].info(I18n.t("vagrant.actions.vm.share_folders.mounting_entry",
                                     :name => name,
