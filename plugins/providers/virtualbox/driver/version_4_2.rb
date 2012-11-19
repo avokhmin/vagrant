@@ -184,7 +184,7 @@ module VagrantPlugins
           end
 
           # Find the name of the VM name
-          if output !~ /VM name specified with "(.+?)"/
+          if output !~ /VM name specified with \-\-vmname\: "(.+?)"/
             @logger.error("Couldn't find VM name in the output.")
             return nil
           end
