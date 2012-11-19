@@ -159,7 +159,7 @@ module VagrantPlugins
           total = ""
           last  = 0
           tmp_name = rand(36**20).to_s(36) << '_' << Time.now.to_i.to_s
-          execute("import", ovf, '--vsys', 0, '--vmname', tmp_name) do |type, data|
+          execute("import", ovf, '--vsys', '0', '--vmname', tmp_name) do |type, data|
             if type == :stdout
               # Keep track of the stdout so that we can get the VM name
               output << data
