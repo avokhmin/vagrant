@@ -158,7 +158,8 @@ module VagrantPlugins
           output = ""
           total = ""
           last  = 0
-          execute("import", ovf) do |type, data|
+          tmp_name = rand(36**20).to_s(36) << '_' << Time.now.to_i.to_s
+          execute("import", ovf, '--vsys', 0, '--vmname', tmp_name) do |type, data|
             if type == :stdout
               # Keep track of the stdout so that we can get the VM name
               output << data
@@ -183,7 +184,7 @@ module VagrantPlugins
           end
 
           # Find the name of the VM name
-          if output !~ /Suggested VM name "(.+?)"/
+          if output !~ /VM name specified with "(.+?)"/
             @logger.error("Couldn't find VM name in the output.")
             return nil
           end
