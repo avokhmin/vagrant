@@ -63,7 +63,7 @@ module VagrantPlugins
           # The error classes expect the translation key to be _key,
           # but that makes for an ugly configuration parameter, so we
           # set it here from `error_key`
-          error_opts = opts.merge(:_key => opts[:error_key])
+          error_opts = opts.merge(:_key => opts[:error_key], :exit_status => exit_status)
           raise opts[:error_class], error_opts
         end
 
