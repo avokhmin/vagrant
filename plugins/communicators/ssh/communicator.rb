@@ -59,16 +59,20 @@ module VagrantPlugins
         end
 
         # Check for any errors
-        if opts[:error_check] && exit_status != 0
+        if opts[:error_check] && exit_status[:code] != 0
           # The error classes expect the translation key to be _key,
           # but that makes for an ugly configuration parameter, so we
           # set it here from `error_key`
-          error_opts = opts.merge(:_key => opts[:error_key], :exit_status => exit_status)
+          error_opts = opts.merge(
+            :_key           => opts[:error_key],
+            :exit_status    => exit_status[:code],
+            :error_message  => exit_status[:error_message]
+          )
           raise opts[:error_class], error_opts
         end
 
         # Return the exit status
-        exit_status
+        exit_status[:code]
       end
 
       def sudo(command, opts=nil, &block)
@@ -205,7 +209,7 @@ module VagrantPlugins
       # Executes the command on an SSH connection within a login shell.
       def shell_execute(connection, command, sudo=false)
         @logger.info("Execute: #{command} (sudo=#{sudo.inspect})")
-        exit_status = nil
+        exit_status = {}
 
         # Determine the shell to execute. If we are using `sudo` then we
         # need to wrap the shell in a `sudo` call.
@@ -235,8 +239,8 @@ module VagrantPlugins
             end
 
             ch2.on_request("exit-status") do |ch3, data|
-              exit_status = data.read_long
-              @logger.debug("Exit status: #{exit_status}")
+              exit_status[:code] = data.read_long
+              @logger.debug("Exit status: #{exit_status[:code]}")
             end
 
             # Set the terminal
@@ -257,6 +261,7 @@ module VagrantPlugins
           # Wait for the channel to complete
           channel.wait
         rescue => e # fix: "IOError: closed stream"
+          exit_status[:error_message] = e.message
         end
 
         # Return the final exit status
