@@ -253,8 +253,11 @@ module VagrantPlugins
           end
         end
 
-        # Wait for the channel to complete
-        channel.wait
+        begin
+          # Wait for the channel to complete
+          channel.wait
+        rescue => e # fix: "IOError: closed stream"
+        end
 
         # Return the final exit status
         return exit_status
