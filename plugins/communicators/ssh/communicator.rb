@@ -58,15 +58,15 @@ module VagrantPlugins
         }.merge(opts || {})
 
         # Connect via SSH and execute the command in the shell.
-        stdout = ""
-        stderr = ""
+        # stdout = ""
+        # stderr = ""
         exit_status = connect do |connection|
           shell_execute(connection, command, opts[:sudo]) do |type, data|
-            if type == :stdout
-              stdout += data
-            elsif type == :stderr
-              stderr += data
-            end
+            # if type == :stdout
+            #   stdout += data
+            # elsif type == :stderr
+            #   stderr += data
+            # end
 
             block.call(type, data) if block
           end
@@ -79,8 +79,9 @@ module VagrantPlugins
           # set it here from `error_key`
           error_opts = opts.merge(
             :_key => opts[:error_key],
-            :stdout => stdout,
-            :stderr => stderr
+            # :stdout => stdout,
+            # :stderr => stderr
+            :exit_status => exit_status
           )
           raise opts[:error_class], error_opts
         end
